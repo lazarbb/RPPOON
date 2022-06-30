@@ -1,0 +1,121 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp13
+{
+    
+ class Notebook
+    {
+        private List<Note> notes;
+        ITheme theme;
+        public Notebook(ITheme theme) { this.notes = new List<Note>();  this.theme = theme; }
+        public void AddNote(Note note) { this.notes.Add(note); }
+        public void ChangeTheme(ITheme theme)
+        {
+            foreach (Note note in this.notes)
+            {
+                note.Theme = theme;
+            }
+        }
+        public void Display()
+        {
+            foreach (Note note in this.notes)
+            {
+                note.Show();
+                Console.WriteLine("\n");
+            }
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp13
+{
+    class GroupNote : Note
+    {
+
+        private List<String> names;
+
+        public GroupNote(string message, ITheme theme) : base(message, theme) { names = new List<String>(); }
+
+        public void insert(String name)
+        {
+
+            names.Add(name);
+
+
+        }
+        public void delete(int name)
+        {
+            names.RemoveAt(name);
+
+
+        }
+        public override void Show()
+        {
+            this.ChangeColor();
+            Console.WriteLine("Names: ");
+            string framedMessage = this.GetFramedMessage();
+            Console.WriteLine(framedMessage);
+
+
+            foreach (String k in names)
+            {
+
+                this.ChangeColor();
+            
+                Console.WriteLine(k);
+               
+                Console.ResetColor();
+                
+            }
+            
+           
+
+
+
+
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp13
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            
+            ITheme theme = new LightTheme();
+            ITheme theme1 = new DarkTheme();
+          
+                
+            ReminderNote note = new ReminderNote("hello", theme);
+            ReminderNote note1 = new ReminderNote("There will be blood", theme1);
+            GroupNote note3 = new GroupNote("People to kill:", theme);
+            //note3.insert("ja");
+            //note3.insert("you");
+            //note3.Show();
+            //note3.delete(1);
+            //note3.Show();
+
+            Notebook notes = new Notebook(theme1);
+            notes.AddNote(note);
+            notes.Display();
+
+        }
+    }
+}
